@@ -1,0 +1,4 @@
+AuthUserFile /var/www/lisa/upload/.htpasswd
+AuthType Basic
+AuthName "Uploadbereich von LiSA"
+Require valid-user

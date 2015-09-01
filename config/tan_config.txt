@@ -1,0 +1,11 @@
+#Typ,Bezeichnung,Anzahl
+#k,wit2a,3
+#k,wit3a,30
+#k,wit3b,30
+#k,wit3c,30
+#k,tga,30
+#k,wit3d,60
+l,reim,30
+l,ahre,30
+l,jant,30
+#l,knau,120

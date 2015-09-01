@@ -1,0 +1,4 @@
+AuthUserFile /var/www/lisa/admin/.htpasswd
+AuthType Basic
+AuthName "Adminbereich von LiSA"
+Require valid-user

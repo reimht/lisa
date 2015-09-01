@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="33cm" height="10cm" viewBox="124 109 643 187" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <polygon style="fill: #1e90ff" points="128,259 767,141 694,228 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2.35099e-37; stroke: #000000" points="128,259 767,141 694,228 "/>
+  </g>
+  <g>
+    <rect style="fill: #1e90ff" x="405" y="292.1" width="0" height="14.95"/>
+    <text font-size="12.8" style="fill: #1e90ff;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="405" y="304">
+      <tspan x="405" y="304"></tspan>
+    </text>
+  </g>
+  <text font-size="160" style="fill: #0000ff;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="237" y="258">
+    <tspan x="237" y="258">LiSA</tspan>
+  </text>
+  <text font-size="12.8016" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="583" y="204">
+    <tspan x="583" y="204">by: reimers</tspan>
+    <tspan x="583" y="220.002">@heye-tammo.de</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="384" y="301">
+    <tspan x="384" y="301"></tspan>
+  </text>
+</svg>
