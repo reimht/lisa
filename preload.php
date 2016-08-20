@@ -11,6 +11,14 @@
 		$_SESSION["base_folder"]=$base_folder;
 	}
 	
+	check_config_file_templates("config/classes.csv");
+	check_config_file_templates("config/passwd_list.txt");
+	check_config_file_templates("config/settings.ini");
+	check_config_file_templates("config/tan_config.txt");
+	check_config_file_templates("config/tan_list.txt");
+	check_config_file_templates("config/tan_used.txt");
+	
+
 
 	require_once($_SESSION["base_folder"]."functions.php"); 
         require_once($_SESSION["base_folder"]."classes/Images.php"); 
@@ -81,6 +89,31 @@
 		}
 		return false;
 	}
+
+
+	function check_config_file_templates($file){
+		
+		if($file{0}!="/"){
+			$file=__DIR__."/".$file;
+		}
+		
+		$path_info=pathinfo($file);
+		if( !file_exists($file) ){
+			echo "Warning '$file' not exists!<br>";
+			$template_file=$path_info["dirname"]."/".$path_info["filename"]."_template.".$path_info["extension"];
+			if( !file_exists($template_file) ){
+				echo "Error template file '$template_file' not exists!<br>";
+			}
+			else{
+				copy ($template_file, $file);
+			}
+		}
+		if( !file_exists($file) ){
+			echo "Error can't create '$file'!<br>";
+		}
+		
+	}
+	
 
 
 	function check_passwd($area, $password){
