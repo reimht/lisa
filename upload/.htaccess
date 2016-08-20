@@ -1,4 +1,3 @@
-AuthUserFile /var/www/lisa/upload/.htpasswd
-AuthType Basic
-AuthName "Uploadbereich von LiSA"
-Require valid-user
+php_value upload_max_filesize 500M
+php_value post_max_size 500M
+php_value max_file_uploads 1000

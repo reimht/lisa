@@ -1,8 +1,7 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	session_start();
-	require_once('../functions.php'); 
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("upload");	 
 
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");
@@ -78,12 +77,29 @@ for($i=0;$i<$nr_files;$i++){
 		$filename_tmp=$_FILES['files']['tmp_name'][$i];
 		$filename=$_FILES['files']['name'][$i];
 		echo "Lade die Datei: $filename ... ";
-		if (move_uploaded_file($filename_tmp, $path.$filename)) {
+
+	
+		if( ! is_uploaded_file( $filename_tmp  )){
+			echo "Fehler: Die Datei '$filename_tmp' wurde nicht per POST hochgeladen! M&ouml;glicherweise eine Dateiupload-Attacke! <br>\n";
+		}
+		else if (move_uploaded_file($filename_tmp, $path.$filename)) {
 			echo "OK!.<br>\n";
 			umask(0002);
 			chmod($path.$filename, 0660);
 		} else {
-			echo "möglicherweise eine Dateiupload-Attacke!<br>\n";
+			if(disk_free_space($path)<50000000){
+				echo "Warnung: Nur sehr wenig freier Festplattenspeicher: ".floor(disk_free_space($path)/1024/1024)." MBytes<br>\n";
+
+			}
+			if(!is_writable($path) ){
+				echo "Fehler: Keine Schreibrechte f&uuml;r '$path'<br>\n";
+			}
+			else if(!is_writable($path.$filename) ){
+                                echo "Fehler: Keine Schreibrechte f&uuml;r '$path.$filename'<br>\n";
+                        }
+			else{ 
+				echo "Fehler: Konnte die Datei $filename_tmp nicht verschieben. Festplatte voll oder m&ouml;glicherweise eine Dateiupload-Attacke!<br>\n";
+			}
 		}
 	}
 }

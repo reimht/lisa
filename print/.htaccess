@@ -1,4 +1,0 @@
-AuthUserFile /var/www/lisa/print/.htpasswd
-AuthType Basic
-AuthName "Adminbereich von LiSA"
-Require valid-user

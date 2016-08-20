@@ -1,11 +1,7 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	session_start();
-	require_once('../functions.php'); 
-	
-	require_once('../settings.php'); 
-	$_SESSION["settings"]=$settings;	
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("upload");		
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");
 
@@ -39,7 +35,7 @@
 	}
 	$path="../".$_SESSION["settings"]["images_school_classes"]."$class/";
 
-	$classes=read_classes_from_csv("../".$settings["classes.csv"]);
+	$classes=read_classes_from_csv("../".$_SESSION["settings"]["classes.csv"]);
 
 /*
 	if( !in_array($class,$classes) ){

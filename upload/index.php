@@ -1,15 +1,7 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	session_start();
-	session_regenerate_id(true); 
-	require_once('../functions.php'); 
-	$_SESSION=array();
-	
-	if(!isset($_SESSION["settings"])){
-		require_once('../settings.php'); 
-		$_SESSION["settings"]=$settings;
-	}
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("upload");	
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");	
 
