@@ -555,51 +555,54 @@ root@machine:/tmp# echo -n Ä | hexdump
 		return "$day.$month.$year";
 	}
 
+	function create_data_path($prefix,$path,$msg=null){
+
+		if( !file_exists($prefix) ){
+			echo "Fehler: Basispath '$prefix' existiert nicht!<br>";
+		}
+		else{
+			$paths=explode("/",$path);
+			foreach($paths AS $p){
+				//Keine Verzeichnisse ohne Namen erstellen
+				if(strlen($p)>0){
+					$prefix=$prefix."/".$p;
+					//Entferne eventuell vorkommende "Doppel Slashes "
+					$prefix = preg_replace('/([^:])(\/{2,})/', '$1/', $prefix); 
+					if($msg!==null) echo "<b>$msg</b><br>"; 
+					echo "Prüfe:  Verzeichnis '$prefix'!<br>"; 
+					if( !file_exists($prefix) ){
+						@mkdir($prefix, 0770);
+					}
+					if( !file_exists($prefix) ){
+						echo "Fehler: Konnte Verzeichnis '$prefix' nicht erstellen!<br>"; 
+					}
+				}
+			}
+		}
+	
+	}
+
+
 
 	function create_data_paths($prefix){
 		$prefix.="/";
 		$settings=$_SESSION["settings"];
 		umask(0002);
 		
-		$path_all=$prefix.$settings["target_image_file_path"];
-		echo "Prüfe:  Verzeichnis '$path_all' <br>"; 
-		if( !file_exists($path_all) ){
-			mkdir($path_all, 0770);
-		}
-		if( !file_exists($path_all) ){
-			echo "Fehler: Konnte Verzeichnis '$path_all' nicht erstellen!<br>"; 
-		}
+		//Verzeichnis für die fertigen Klassenfotos
+		create_data_path($prefix,$settings["target_image_file_path"], "Verzeichnis für die fertigen Klassenfotos");
 
 		//Verzeichnis für den Upload von Klassenfotos
-		$path_school_classes=$prefix.$settings["images_school_classes"];
-		echo "Prüfe:  Verzeichnis '$path_school_classes' <br>"; 
-		if( !file_exists($path_school_classes) ){
-			mkdir($path_school_classes, 0770);;
-		}
-		if( !file_exists($path_school_classes) ){
-			echo "Fehler: Konnte Verzeichnis '$path_school_classes' nicht erstellen!<br>"; 
-		}
-
+		create_data_path($prefix,$settings["images_school_classes"], "Verzeichnis für den Upload von Klassenfotos");
+		
 		//Verzeichnis für temporäre Daten
-		$path_temp=$prefix.$settings["temp_image_file_path"];
-		echo "Prüfe:  Verzeichnis '$path_temp' <br>"; 
-		if( !file_exists($path_temp) ){
-			mkdir($path_temp, 0770);
-		}
-		if( !file_exists($path_temp) ){
-			echo "Fehler: Konnte Verzeichnis '$path_temp' nicht erstellen!<br>"; 
-		}
-
+		create_data_path($prefix,$settings["temp_image_file_path"], "Verzeichnis für temporäre Daten");
+		
 		//Verzeichnis für Vergleichsbilder (BBS Plan)
-		$path_matching=$prefix.$settings["images_matching"];
-		echo "Prüfe:  Verzeichnis '$path_matching' <br>"; 
-		if( !file_exists($path_matching) ){
-			mkdir($path_matching, 0770);
-		}
-		if( !file_exists($path_matching) ){
-			echo "Fehler: Konnte Verzeichnis '$path_matching' nicht erstellen!<br>"; 
-		}
-
+		create_data_path($prefix,$settings["images_matching"], "Verzeichnis für Vergleichsbilder (BBS Plan)");
+		
+		
+		/* 
 		//Erzeuge BBS-Plan Import Datei
 		echo "Erzeuge BBS-Plan Import Datei<br>";
 		$line='"SNR";"KL_NAME";"LFD";"STATUS";"NR_SCHÜLER";"NNAME";"VNAME";"GEBDAT";"GEBORT";"STR";"PLZ";"ORT";"TEL";"FAX";"LANDKREIS";"GESCHLECHT";"KONF";"STAAT";"FAMSTAND";"SFO";"TAKURZ";"KLST";"ORG";"DAUER";"TAKLSTORG";"SFOTEXT";"TALANG";"ORG_N";"A";"BG";"BG_SFO";"BG_BFELD";"BG_FREI";"BG_KLST";"BG_ORG";"BG_DAUER";"KO";"EINTR_DAT";"AUSB_BEGDAT";"A_DAUER";"A_ENDEDAT";"ANRECH_BGJ";"WIEDERHOL";"ABSCHLUSS";"HERKUNFT";"FH_Z";"UM";"A_AMT";"BETRAG";"E_ANREDE";"E_NNAME";"E_VNAME";"E_STR";"E_PLZ";"E_ORT";"E_TEL";"E_FAX";"E_ANREDE2";"E_NNAME2";"E_VNAME2";"E_STR2";"E_PLZ2";"E_ORT2";"E_TEL2";"E_FAX2";"BETRIEB_NR";"BETRIEB_NR2";"BEMERK";"KENNUNG1";"KENNUNG2";"KENNUNG3";"DATUM1";"DATUM2";"K1";"K_NR1";"K2";"K_NR2";"K3";"K_NR3";"K4";"K_NR4";"K5";"K_NR5";"K6";"K_NR6";"K7";"K_NR7";"K8";"K_NR8";"K9";"K_NR9";"K10";"K_NR10";"K11";"K_NR11";"K12";"K_NR12";"K13";"K_NR13";"K14";"K_NR14";"K15";"K_NR15";"ZU";"MARKE";"FEHLER";"LDK";"HER_ZUSATZ";"E_LDK";"E_LDK2";"BETRIEB_NR3";"BETRIEB_NR4";"KENNUNG4";"KENNUNG5";"KENNUNG6";"SNR1";"SNR2";"LDK_Z";"BETRAG_G";"AS";"BAFOEG";"LML1";"BUDGET_TH";"BUDGET_FP";"KONF_TEXT";"A_BEZIRK";"P_FAKTOR";"SCHULPFLICHT";"N_DE";"HER_B";"BL_SOLL";"LM_M";"LM_Z";"LM_DAT";"EMAIL";"E_EMAIL";"E_EMAIL2";"IDENT";"TEL_HANDY";"TAKLSTORG_ERST"'."\r\n";
@@ -609,7 +612,7 @@ root@machine:/tmp# echo -n Ä | hexdump
 		fwrite($fp,$line);
 		fclose($fp);
 		chmod($filename, 0660);
-
+		*/
 	}	
 
 	function pathSize($dir) {

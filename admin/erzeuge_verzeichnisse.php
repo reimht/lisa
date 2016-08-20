@@ -17,7 +17,7 @@
 			create_data_paths($path);
 		}
 		else{
-			echo "Fehler: Konnte LiSA Pfad existiert nicht<br>";
+			echo "Fehler: LiSA Pfad existiert nicht<br>";
 		}
 	}
 	else{
