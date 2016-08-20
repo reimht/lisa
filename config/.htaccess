@@ -1,0 +1,7 @@
+<Files "*.*">
+Deny from all
+</Files>
+
+<FilesMatch "\.(htm|html)$">
+Allow from all
+</FilesMatch>
