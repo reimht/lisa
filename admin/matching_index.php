@@ -1,11 +1,7 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	session_start();
-	require_once('../functions.php'); 
-
-	require_once('../settings.php'); 
-	$_SESSION["settings"]=$settings;	
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("admin");	
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");	
 
@@ -172,7 +168,7 @@
 
 
 		if(   !isset($_SESSION["lisa_source"])  ) {
-			$_SESSION["lisa_source"]="../".$_SESSION["settings"]["images_matching_lisa"];
+			$_SESSION["lisa_source"]=$_SESSION["lisa_path"]."/".$_SESSION["settings"]["images_matching_lisa"];
 
 		}
 		

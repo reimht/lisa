@@ -1,16 +1,7 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-
-	session_start();
-	session_regenerate_id(true); 
-	require_once('../functions.php'); 
-	$_SESSION=array();
-
-	require_once('../settings.php'); 
-	$_SESSION["settings"]=$settings;	
-
-
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("admin");	
 
 	$filename_config="../".$_SESSION["settings"]["tan_config.txt"];
 	$msg="TAN Liste";

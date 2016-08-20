@@ -1,8 +1,7 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	session_start();
-	require_once('../functions.php'); 
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("admin");	
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");	
 	
@@ -92,15 +91,8 @@
 
 	if (file_exists($filename_zip )) {
 		//Gebe Download Link aus
-		$link=$_SESSION["bbsplan_source"]."/pics.zip";
+		$link=str_replace($_SERVER["DOCUMENT_ROOT"],"",$_SESSION["bbsplan_source"])."/pics.zip";
 		echo "<a href='$link'>  Download Zip-Datei </a><br>";
-
-		//Erzeuge Alternativen Download Link
-		$i=strlen($_SERVER["PHP_SELF"]);
-		$j=$i-strlen(basename($_SERVER["PHP_SELF"]))-1;
-		$pathlink=substr ( $filename_zip , 0 , $j );
-		$link="http://".$_SERVER["SERVER_NAME"]."/".str_replace($pathlink, "", $filename_zip);
-		echo "<a href='$link'> Alternativer Download Zip-Datei </a>";
 	}
 	else{
 		echo "Warnung: Es wurde keine ZIP-Datei erstellt<br>";

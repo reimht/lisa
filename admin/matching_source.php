@@ -1,15 +1,10 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	session_start();
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("admin"); //area = false => auto = folder name
+	
 	//System auf UTF-8 einstellen
-	iconv_set_encoding("input_encoding", "UTF-8");
-	iconv_set_encoding("internal_encoding", "UTF-8");
-	iconv_set_encoding("output_encoding", "UTF-8");
 	header("Content-Type: text/html; charset=UTF-8");
-
-	require_once('../functions.php'); 
-	require_once('../settings.php'); 	
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");		
 
@@ -124,12 +119,12 @@
 
 
 	if( !isset($_SESSION[$source."_source"]) ){
-		$_SESSION[$source."_source"] = "../".$settings["images_matching"];
+		$_SESSION[$source."_source"] = $_SESSION["lisa_path"]."/".$_SESSION["settings"]["images_matching"];
 	}
 
 	//Verzeichnis auswählen
 	if($standart_dir){
-		$_SESSION[$source."_source"]="../".$settings["images_matching_lisa"];
+		$_SESSION[$source."_source"]=$_SESSION["lisa_path"]."/".$_SESSION["settings"]["images_matching_lisa"];
 	}
 	//Aktuelles Verzeichnis auswählen
 	else if( isset( $_POST["path"] ) && isset( $_POST["chdir"] ) ){
@@ -299,7 +294,7 @@ print_r($stat);
 
 	echo "<table border='1'>";
 	$directory = opendir($path);
-	echo "<tr><td>Hauptordner</td><td colspan='2'>". buttonpath($source,"../".$settings["images_matching"])."</td>";
+	echo "<tr><td>Hauptordner</td><td colspan='2'>". buttonpath($source,$_SESSION["lisa_path"]."/".$_SESSION["settings"]["images_matching"])."</td>";
 	echo "<tr><td>Eine Ebende zurück</td><td colspan='2'>". buttonpath($source,prepath($path))."</td>";
 	echo "<tr><td>
 					<form action='matching_source.php' method='POST'>

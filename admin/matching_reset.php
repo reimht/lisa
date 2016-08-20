@@ -1,17 +1,12 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	iconv_set_encoding("input_encoding", "UTF-8");
-	iconv_set_encoding("internal_encoding", "UTF-8");
-	iconv_set_encoding("output_encoding", "UTF-8");
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("admin"); //area = false => auto = folder name
+	
 	header("Content-Type: text/html; charset=utf-8");
 	
 	session_start();
-	require_once('../functions.php'); 
 
-	
-	require_once('../settings.php'); 
-	$_SESSION["settings"]=$settings;	
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");		
 	echo "<br><a href='matching_index.php'> Zur&uuml;ck </a><br>";	

@@ -1,98 +1,68 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout(false); //area = false => auto = folder name	
+	
 	//=== Nichts cachen - Seite immer neu aufrufen
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 	header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
 	header('Cache-Control: no-store');
 	header('Pragma: no-cache');
 	//System auf UTF-8 einstellen
-	iconv_set_encoding("input_encoding", "UTF-8");
-	iconv_set_encoding("internal_encoding", "UTF-8");
-	iconv_set_encoding("output_encoding", "UTF-8");
 	header("Content-Type: text/html; charset=UTF-8");
 	
-	require_once('../functions.php'); 
+
+
+
+
+	//Layout einlesen
+	$layout="ausweis";
+	$filename="layout_".$layout.".html";
+	$layouthead="";
+	$layoutbody="";
+	if( file_exists($filename) ){
+		$filecontent=file_get_contents($filename);
+		//Head ermitteln
+                preg_match("~<head.*?>(.*?)<\/head>~is", $filecontent, $layouthead);
+                if( isset($layouthead[1]) ){
+                        $layouthead=$layouthead[1];
+                }
+		//Body ermitteln
+		preg_match("~<body.*?>(.*?)<\/body>~is", $filecontent, $layoutbody);
+		if( isset($layoutbody[1]) ){
+			$layoutbody=$layoutbody[1];
+		} 
+	}
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
 	<title>BBS2Leer</title>
-	<style type="text/css">
-		@page { size:8.56cm 5.39cm; margin:0.1cm 0.1cm 0.1cm 0.1cm; }
-	</style>
-
-
+	<link rel="stylesheet" type="text/css"; media="print" href="druck.css">
+	<?php echo $layouthead ?>
     <style>
-	/*Höhe der ersten Zeilen*/
-	.topline
-		{
-			height:0.3cm;
-			margin:0cm;
-			padding:0cm;
-			font-size:0.4cm;
-			/*Bild oben bündig*/
-			vertical-align: top;
-			/*horizontal zentriert*/
-			margin-left: auto;
-			margin-right: auto;
-			/*Gesamt Breite des Ausweises max 8.56*/
-			width:8.4cm;
-		}
-	/*Größe der Zelle in dem das Bild ist*/
-	.imgpass_td
-		{
-			width:3.5cm;
-			height:4cm;
-			/*Bild oben bündig*/
-			/*vertical-align: top;	*/
-
-		}
-	/*Größe des Bildes*/
-	.imgpass
-		{
-			display: block;
-			max-width:3.1cm;
-			max-height:4cm;
-  			margin-right:0.3cm;
-			/*horizontal zentriert*/
-			margin-left: auto;
-
-					
-		} 
-	.pass_field_description
-		{
-			font-size:0.2cm;
-			padding-left:0cm;
-			height:0.27cm;
-			background: white;
-			//width:4cm;
-			vertical-align: bottom;
-		} 
-	.pass_field_value
-		{
-			font-size:0.4cm;
-			padding-left:0.2cm;
-			height:0.5cm;
-			background: white;
-			border-bottom:2px solid #000000; //Line unterhalb
-		} 
-	.long_entry
-		{
-			font-size:0.3cm;
-		} 
-	.very_long_entry
-		{
-			font-size:0.2cm;
-		} 
+    #main
+        {
+	    <?php if( isset($menu_visibility)  ) echo $menu_visibility; ?>
+            margin-left: 2em auto 0;
+            width: 700px;
+            padding-left: 2em;
+            background: white;
+            -webkit-box-shadow: 0 1px 10px #D9D9D9;
+            -moz-box-shadow: 0 1px 10px #D9D9D9;
+            -ms-box-shadow: 0 1px 10px #D9D9D9;
+            -o-box-shadow: 0 1px 10px #D9D9D9;
+            box-shadow: 0 1px 10px #D9D9D9;
+        }
     </style>
 
 	
 </head>
-<body> 
 
 <?php
-
 //Breite eines Stings abschätzen
 function strwidth($string){
     
@@ -337,10 +307,48 @@ function strwidth($string){
 		$class=urldecode($_GET["c"]);
 	}
 	
+	//Ablaufdatum
+	if(!isset($_GET["a"])){
+		if(!isset($_SESSION["studentdata"][0]["ablaufdatum"])){
+			//echo "Fehler: Kein Ablaufdatum übergeben<br>\n";
+			$ablauf=urldecode($_GET["a"]);
+		}
+		else{
+			$ablauf=$_SESSION["studentdata"][0]["ablaufdatum"];
+		}
+	}
+	else{
+		$ablauf=urldecode($_GET["a"]);
+	}
+	
+	$jahr=date("Y");
 
+	$ablaufdatum_nicht_automatik="";
+	$ablaufdatum="31.07.".($jahr+1);
+	if( isset($_POST["ablaufdatum_nicht_automatik"]) ){
+		$ablaufdatum_nicht_automatik="checked";
+		$ablaufdatum_msg="Das Ablaufdatum wurde nicht automatisch bestimmt!";
+	}
+	else{
+		$classes_ablauf=read_classes_from_csv("../".$_SESSION["settings"]["classes.csv"], true);
+		$ablauf=ausweisAblauf($class,$classes_ablauf);		
+		$validity_years=class_validity_years($class, $classes_ablauf);
+		if($validity_years>0){
+			$ablaufdatum=ausweisAblauf($validity_years);
+			$ablaufdatum_msg="Der Ausweis ist ".$validity_years."Jahr/e bis zum ".$ablaufdatum." g&uuml;ltig";
+		}
+		else{
+			$ablaufdatum_msg="Fehler: Das Ablaufdatum ist nicht bei den vorgegebenen Klassen angegeben!";
+		}
+	}
+
+	$schuljahr=$jahr."/".($jahr+1);
+       if( isset($_POST["schuljahr"]) ) $schuljahr=$_POST["schuljahr"];
 	
 	
-	
+	if( strlen($ablauf) <=3 ) $ablauf=ausweisAblauf();
+	$ablaufdatum=$ablauf;
+
 	
 	$name=$given_name."<br>".$last_name;
 
@@ -359,53 +367,87 @@ function strwidth($string){
 	else{
 		$css_font_mod="pass_field_value";
 	}
-	
-	if(isset($_SESSION["ablauf"])){
-		$ablauf=$_SESSION["ablauf"];
-	}
-	else{
-		$ablauf=ausweisAblauf();
-	}
-	$output="
-	<div style='float: break; margin-bottom: 30px; '>
-		<table border='0' style='border-collapse:collapse;'>
-			
-			<tr>
-				<th colspan='2' class='topline'>Cisco Akademietage Lingen 2015</th>
-			</tr>
 
+
+		function print_pass($data, $layoutbody){
+			global $ablaufdatum, $schuljahr;
+			$given_name = convert_string( $data["given_name"] );
+			$last_name = convert_string( $data["last_name"] );
+			$name=   $given_name." ".$last_name;
+			$birthday=$data["birthday"];
+			$class=$data["class"];
+			$img="../".$data["pic_small"];
+		
+			$last_name_url=urlencode(    $data["last_name"]    );
+			$last_name_url=str_replace( "+"," ",$last_name_url);
+
+			$given_name_url=urlencode(    $data["given_name"]);
+			$given_name_url=str_replace( "+"," ",$given_name_url);
+
+
+			$img = str_replace($data["last_name"]   ,$last_name_url , $img);
+			$img = str_replace($data["given_name"], $given_name_url , $img);
+			//$img = str_replace($data["last_name"], urlencode($data["last_name"]), $img);
+
+			if(strlen($layoutbody)>100){
+				$layoutbody=str_replace("LISA_LINK_AUSWEIS", "show_one_student.php?img=".urlencode($img)."&gn=".urlencode($given_name)."&ln=".urlencode($last_name)."&b=".urlencode($birthday)."&c=".urlencode($class)."&a=".urlencode($ablaufdatum), $layoutbody);
+				$layoutbody=str_replace("LISA_BILD", $img, $layoutbody);
+				$layoutbody=str_replace("LISA_VORNAME", $given_name, $layoutbody);
+				$layoutbody=str_replace("LISA_NACHNAME", $last_name, $layoutbody);
+				$layoutbody=str_replace("LISA_GEBURTSDATUM", $birthday, $layoutbody);
+				$layoutbody=str_replace("LISA_KLASSE", $class, $layoutbody);
+				$layoutbody=str_replace("LISA_SCHULJAHR", $schuljahr, $layoutbody);
+				$layoutbody=str_replace("LISA_ABLAUFDATUM", $ablaufdatum, $layoutbody);
+					
+				return $layoutbody;
+			}
+
+			$s="";
+			$s.="<table border='0' style='border-collapse:collapse;'>
+<!--			
 			<tr>
-				<td rowspan='6' class='imgpass_td'><img src='$img' class='imgpass'></td>
-				<td  class='pass_field_description'>Vorname, Name:</td>
-			</tr>
-			<tr>
-				<td  class='pass_field_value $css_font_mod'>$name</td>
-			</tr>
-			<tr>
-				<td class='pass_field_description'>Geburtsdatum:</td>
-			</tr>
-			<tr>
-				<td class='pass_field_value'>$birthday</td>
-			</tr>
-			<tr>
-				<td class='pass_field_description'>Klasse:</td>
-			</tr>
-			<tr>
-				<td class='pass_field_value'>$class</td>
-			</tr>
-<!--
-			<tr>
-				<td class='pass_field_description'>Schuljahr</td>
-				<td class='pass_field_value'>2014/2015</td>
+				<th colspan='3'>Berufsbildende Schulen II Leer</th>
 			</tr>
 -->
 			<tr>
-				<td class='pass_field_description' colspan='2'><center><h2>Print: LiSA by reimers@heye-tammo.de</h2></center></td>
-				<!--<td class='pass_field_description' colspan='2'>Nur gültig in Verbindung mit einem Personalausweis. Gültig bis zum $ablauf</td> -->
+				<td rowspan='9' class='imgpass_td'><a href='show_one_student.php?img=".urlencode($img)."&gn=".urlencode($given_name)."&ln=".urlencode($last_name)."&b=".urlencode($birthday)."&c=".urlencode($class)."&a=".urlencode($ablaufdatum)."'><img src='$img' class='imgpass'></a></td>
+				<td colspan='2' class='pass_description_long'>Vorname, Name:</td>
 			</tr>
-		</table>
-    </div>";
+			<tr>
+				<td colspan='2' class='pass_value_long'>$name</td>
+			</tr>
+			<tr>
+				<td class='pass_description_short'>Geburtsdatum:</td>
+				<td class='pass_value_short'>$birthday</td>
+			</tr>
+			<tr>
+				<td class='pass_description_short'>Klasse:</td>
+				<td class='pass_value_short'>$class</td>
+			</tr>
+<!--
+			<tr>
+				<td class='pass_description_short'>Schuljahr</td>
+				<td class='pass_value_short'>$schuljahr</td>
+			</tr>
+-->
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			</table>";
+			return $s;
+		}
 
-	echo $output;	
+
+
+		$student=array();
+		$student["given_name"] = $given_name;
+		$student["last_name"] =$last_name;
+		$student["birthday"] = $birthday;
+		$student["class"] = $class;
+		$student["pic_small"] = $imgfile["filepath"].$imgfile["filename"];
+		$student["pic_small"] = $imgfile["filepath"].$imgfile["filename"];
+
+
+		echo print_pass($student, $layoutbody);
 
 ?>

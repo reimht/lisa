@@ -1,12 +1,7 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
-
-	session_start();
-
-
-	require_once('../functions.php'); 
-
-	$settings=$_SESSION["settings"];
+	require_once('../preload.php'); 	//Create Session an load Config
+	check_login_logout("admin");	
 
 
 	echo create_header("BBS2Leer", "","","","","logolisa.svg");	
@@ -15,8 +10,21 @@
 	
 	echo "Erzeuge Verzeichnisse<br><br>";
 	
-	create_data_paths("../");
 
+	if(isset($_SESSION["lisa_path"])){
+		$path=realpath($_SESSION["lisa_path"]);
+		if($path!=""){
+			create_data_paths($path);
+		}
+		else{
+			echo "Fehler: Konnte LiSA Pfad existiert nicht<br>";
+		}
+	}
+	else{
+		echo "Fehler: Konnte LiSA Pfad nicht ermitteln<br>";
+	} 
+
+ 
 ?>
 			
 			<p>
