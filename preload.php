@@ -15,8 +15,6 @@
 
 	//Load Funktions
 	require_once($_SESSION["base_folder"]."functions.php"); 
-        require_once($_SESSION["base_folder"]."classes/Images.php"); 
-        require_once($_SESSION["base_folder"]."classes/Files.php"); 
 	
 	//Check main config file
 	check_config_file_templates("config/settings.ini");
@@ -26,19 +24,22 @@
 		$_SESSION["settings"]=parse_ini_file($_SESSION["base_folder"]."config/settings.ini", FALSE);
 		$_SESSION["lisa_path"]=realpath($_SESSION["base_folder"]);//.$_SESSION["settings"]["domainSubFolder"]);
 		$_SESSION["lisa_web_base_path"]=substr(__DIR__,strlen($_SERVER["DOCUMENT_ROOT"]));
+	
+		//Check other config files
+		check_config_file_templates($_SESSION["settings"]["classes.csv"]); //"config/classes.csv"); 
+		check_config_file_templates($_SESSION["settings"]["passwd_list.txt"]); //"config/passwd_list.txt");	
+		check_config_file_templates($_SESSION["settings"]["tan_config.txt"]); //"config/tan_config.txt");
+		check_config_file_templates($_SESSION["settings"]["tan_list.txt"]); //"config/tan_list.txt");
+		check_config_file_templates($_SESSION["settings"]["tan_used.txt"]); //"config/tan_used.txt");
+		check_config_file_templates("admin/layout_ausweis.html");
+		check_config_file_templates("admin/layout_klasse.html");	
+		
+		check_path("images_school_classes");
+		check_path("temp_image_file_path");
+		check_path("target_image_file_path");
+		check_path("images_matching_lisa");
+	
 	}
-	
-	//Check other config files
-	check_config_file_templates($_SESSION["settings"]["classes.csv"]); //"config/classes.csv"); 
-	check_config_file_templates($_SESSION["settings"]["passwd_list.txt"]); //"config/passwd_list.txt");	
-	check_config_file_templates($_SESSION["settings"]["tan_config.txt"]); //"config/tan_config.txt");
-	check_config_file_templates($_SESSION["settings"]["tan_list.txt"]); //"config/tan_list.txt");
-	check_config_file_templates($_SESSION["settings"]["tan_used.txt"]); //"config/tan_used.txt");
-	check_config_file_templates("admin/layout_ausweis.html");
-	check_config_file_templates("admin/layout_klasse.html");	
-	
-	
-	
 	
 //preecho($_SESSION["settings"]);	
 
@@ -99,6 +100,17 @@
 			return true;
 		}
 		return false;
+	}
+	
+	function check_path($name_settings){
+		$settings=$_SESSION["settings"];
+		if(!isset($settings[$name_settings])){
+			echo "Error: Setting with name '$name_settings' not found!<br>\n";
+		}
+		else if(!file_exists(__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings])){
+			echo "Error: Directory '".__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings]."' for '$name_settings' not exists.<br>\n";
+			echo "Go to the admin web-interface and choose 'create folders'!<br>\n";
+		}
 	}
 
 
