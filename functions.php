@@ -291,11 +291,11 @@ root@machine:/tmp# echo -n Ä | hexdump
 
 	}
 
-	function create_footer($body=""){
+	function create_footer($body="", $web_base_path=""){
 		return "$body
 					<div id='footer' align='left'>
 						
-						<a href='impressum.php'  target='_blank'>Impressum</a> 
+						<a href='".$web_base_path."/eingabe/impressum.php'  target='_blank'>Impressum</a> 
 					</div>
 				</div>
 			</body>
