@@ -11,7 +11,7 @@
 	
 	require_once('../preload.php'); 	//Create Session an load Config
 	//check_login_logout("eingabe");	
-	echo create_header("BBS2Leer", "","","","","logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg",false);
 
 	
 	if(isset($settings["demo_mode"])){

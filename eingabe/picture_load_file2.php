@@ -69,7 +69,7 @@
 
 	if($debug!=0) $meta_refresh="";
 	//create_header($tilte, $style,$script,$meta,$body)
-	echo create_header("BBS2Leer", "","",$meta_refresh, "","logolisa.svg",false);	
+	echo create_header($_SESSION["settings"]["html_title"], "","",$meta_refresh, "","logolisa.svg",false);	
 ?>
 		<div align='center' id='main'>
 			<h3><?php echo $pagetitle?></h3>

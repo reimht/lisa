@@ -3,7 +3,7 @@
 	require_once('../preload.php'); 	//Create Session an load Config
 	check_login_logout("admin");	
 	header("Content-Type: text/html; charset=utf-8");	
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");		
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");		
 	
 	$filename="";
 	if(isset($_POST["file"])){

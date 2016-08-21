@@ -4,7 +4,7 @@
 	session_start();
 	require_once('../functions.php'); 
 
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");	
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");	
 	
 	echo "<h1> Zeige gefundene Übereinstimmungen</h1>";
 

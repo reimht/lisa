@@ -4,7 +4,7 @@
 	check_login_logout("upload");	
 		
 
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");		
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");		
 ?>
 			<h3>LiSA - Upload!</h3>
 

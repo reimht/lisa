@@ -12,7 +12,7 @@
 	$_SESSION["picture_source"]="picture_load_file.php";
 
 	//Start Page ($tilte, $style,$script,$meta,$body)
-	echo create_header("BBS2Leer", "","","","","logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg",false);
 ?>
 
 			<h3>1b. Bilddatei auswählen</h3>

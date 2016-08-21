@@ -5,7 +5,7 @@
 	require_once('../functions.php'); 
 
 
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");	
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");	
 
 	//Prüfe on LiSA und BBSPlan Daten eingelesen wurden
 	if( isset($_SESSION["bbsplan"]) AND isset($_SESSION["lisa"]) ){

@@ -8,7 +8,7 @@
 	session_start();
 
 
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");		
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");		
 	echo "<br><a href='matching_index.php'> Zur&uuml;ck </a><br>";	
 	if( isset($_POST["lisa"]) ){
 		echo "Setze die verbleibenen Daten von LiSA zur&uuml;ck<br>";

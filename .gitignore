@@ -5,5 +5,7 @@ config/settings.ini
 config/tan_config.txt
 config/tan_list.txt
 config/tan_used.txt
+admin/layout_ausweis.html
+admin/layout_klasse.html
 lisa_chown_edit.sh
 lisa_chown.sh

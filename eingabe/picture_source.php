@@ -11,7 +11,7 @@
 	$debug=0;
 
 	//Start Page ($tilte, $style,$script,$meta,$body)
-	echo create_header("BBS2Leer", "","","","","logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg",false);
 
 ?>
 			<h3>1a. Bildquelle auswählen</h3>

@@ -11,7 +11,7 @@
 	$debug=0;
 
 	//Start Page ($tilte, $style,$script,$meta,$body)
-	echo create_header("BBS2Leer", "","","","","logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg",false);
 
 
 	if( !isset($_POST["part1"]) OR !isset($_POST["part2"]) OR !isset($_POST["part3"])){

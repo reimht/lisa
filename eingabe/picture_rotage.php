@@ -81,7 +81,7 @@
 
 
 	//Start Page ($tilte, $style,$script,$meta,$body)
-	echo create_header("BBS2Leer",  $style,$script,$meta,"","logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"],  $style,$script,$meta,"","logolisa.svg",false);
 ?>
 
 			<h3>2. Schritt: Foto drehen!</h3>

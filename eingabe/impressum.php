@@ -1,7 +1,8 @@
 <?php
-	require_once('functions.php'); 
+	require_once('../preload.php'); 	//Create Session an load Config
+	//require_once('functions.php'); 
 	//Start Page ($tilte, $style,$script,$meta,$body)
-	echo create_header('BBS2Leer', '','','','',"logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"], '','','','',"logolisa.svg",false);
 	
 ?>
 

@@ -11,23 +11,34 @@
 		$_SESSION["base_folder"]=$base_folder;
 	}
 	
-	check_config_file_templates("config/classes.csv");
-	check_config_file_templates("config/passwd_list.txt");
-	check_config_file_templates("config/settings.ini");
-	check_config_file_templates("config/tan_config.txt");
-	check_config_file_templates("config/tan_list.txt");
-	check_config_file_templates("config/tan_used.txt");
-	
 
 
+	//Load Funktions
 	require_once($_SESSION["base_folder"]."functions.php"); 
         require_once($_SESSION["base_folder"]."classes/Images.php"); 
         require_once($_SESSION["base_folder"]."classes/Files.php"); 
+	
+	//Check main config file
+	check_config_file_templates("config/settings.ini");
+	//Load main config
 	if( !isset($_SESSION["settings"]) ){
 		//require_once($_SERVER['DOCUMENT_ROOT']."/config/settings.php"); 
 		$_SESSION["settings"]=parse_ini_file($_SESSION["base_folder"]."config/settings.ini", FALSE);
 		$_SESSION["lisa_path"]=realpath($_SESSION["base_folder"]);//.$_SESSION["settings"]["domainSubFolder"]);
 	}
+	
+	
+	//Check other config files
+	check_config_file_templates($_SESSION["settings"]["classes.csv"]); //"config/classes.csv"); 
+	check_config_file_templates($_SESSION["settings"]["passwd_list.txt"]); //"config/passwd_list.txt");	
+	check_config_file_templates($_SESSION["settings"]["tan_config.txt"]); //"config/tan_config.txt");
+	check_config_file_templates($_SESSION["settings"]["tan_list.txt"]); //"config/tan_list.txt");
+	check_config_file_templates($_SESSION["settings"]["tan_used.txt"]); //"config/tan_used.txt");
+	check_config_file_templates("admin/layout_ausweis.html");
+	check_config_file_templates("admin/layout_klasse.html");	
+	
+	
+	
 	
 //preecho($_SESSION["settings"]);	
 
@@ -123,7 +134,7 @@
 		}
 		$filename="../".$_SESSION["settings"]["passwd_list.txt"];
 		if(!file_exists($filename)){
-			echo "Fehler: Die angegebene Passwortdatei existiert nicht. Bitte überprüfen Sie die Konfiguration";
+			echo "Fehler: Die angegebene Passwortdatei '$filename' existiert nicht. Bitte überprüfen Sie die Konfiguration";
 			return false;		
 		}
 		
@@ -240,7 +251,7 @@
 		}
 
 		
-		echo create_header("BBS2Leer", "","","","","logolisa.svg");
+		echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");
 		echo "<form action='' method='POST'>
 			".ucfirst($area)."-Passwort: <input type='password' name='password'>
 			<input type='submit' value='anmelden'>

@@ -148,7 +148,7 @@
 	$meta="<script src='jquery-1.11.1.min.js' type='text/javascript'></script>";
 
 	//Start Page ($tilte, $style,$script,$meta,$body)
-	echo create_header("BBS2Leer", "",$script,$meta,"","logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"], "",$script,$meta,"","logolisa.svg",false);
 ?>
 
 			<h3 id='pagetitle' >1.1. Schritt: Foto aufnehmen!</h3>

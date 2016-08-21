@@ -2,7 +2,7 @@
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/;
 	require_once('../preload.php'); 	//Create Session an load Config
 	check_login_logout("eingabe");	
-	//echo create_header("BBS2Leer", "","","","","logolisa.svg");
+
 	
 	/** Info
 	Icon: http://commons.wikimedia.org/wiki/User:Seahen/gallery
@@ -78,7 +78,7 @@
 
         //Start Page ($tilte, $style,$script,$meta,$body)
 
-        echo create_header("BBS2Leer", "","",$meta,$body,"logolisa.svg",false);
+        echo create_header($_SESSION["settings"]["html_title"], "","",$meta,$body,"logolisa.svg",false);
 	
 	echo create_footer("");
 

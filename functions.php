@@ -159,7 +159,7 @@ root@machine:/tmp# echo -n Ä | hexdump
 		exit(0);
 	}
 
-	//create_header("BBS2Leer", "","");
+
 	function create_header($tilte, $style,$script,$meta,$body,$logo="logo_small.png",$headermenu=true, $character_encoding="UTF-8"){
 		global $debug;
 

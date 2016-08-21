@@ -1,15 +1,22 @@
 <?php
 	/* Copyright (c) H. Reimers reimers@heye-tammo.de*/
 
-	iconv_set_encoding("input_encoding", "UTF-8");
-	iconv_set_encoding("internal_encoding", "UTF-8");
-	iconv_set_encoding("output_encoding", "UTF-8");
-	header("Content-Type: text/html; charset=utf-8");
+	//System auf UTF-8 einstellen
+	if (function_exists('iconv') && PHP_VERSION_ID < 50600){
+		//Older PHP Version
+		iconv_set_encoding("input_encoding", $_SESSION["settings"]["character_encoding"]);
+		iconv_set_encoding("internal_encoding", $_SESSION["settings"]["character_encoding"]);
+		iconv_set_encoding("output_encoding", $_SESSION["settings"]["character_encoding"]);
+	}
+	elseif (PHP_VERSION_ID >= 50600){
+		ini_set("default_charset", $_SESSION["settings"]["character_encoding"]);
+	}	
+	header("Content-Type: text/html; charset=".$_SESSION["settings"]["character_encoding"]);
 	
 	session_start();
 	require_once('../functions.php'); 
 
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");	
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");	
 	
 	echo "<br><a href='matching_index.php'> Zur&uuml;ck </a><br>";	
 	echo "<h1> Daten aus BBS Plan</h1>";

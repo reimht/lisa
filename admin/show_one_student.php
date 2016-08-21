@@ -40,7 +40,7 @@
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
-	<title>BBS2Leer</title>
+	<title><?php echo $_SESSION["settings"]["html_title"]; ?></title>
 	<link rel="stylesheet" type="text/css"; media="print" href="druck.css">
 	<?php echo $layouthead ?>
     <style>
@@ -406,7 +406,7 @@ function strwidth($string){
 			$s.="<table border='0' style='border-collapse:collapse;'>
 <!--			
 			<tr>
-				<th colspan='3'>Berufsbildende Schulen II Leer</th>
+				<th colspan='3'>Schulname</th>
 			</tr>
 -->
 			<tr>

@@ -105,14 +105,14 @@
 	if(isset($_POST["back"])){
 		$meta="<meta http-equiv='refresh' content='0; URL=$lastpage'>";
 		//Start Page ($tilte, $style,$script,$meta,$body)
-		echo create_header("BBS2Leer", $style,"",$meta,"","logolisa.svg",false);
+		echo create_header($_SESSION["settings"]["html_title"], $style,"",$meta,"","logolisa.svg",false);
 		print_button($lastpage, "data_input", "zur&uuml;ck");
 		echo create_footer("");
 		exit(0);
 		
 	}
 	//Start Page ($tilte, $style,$script,$meta,$body)
-	echo create_header("BBS2Leer", $style,"","","","logolisa.svg",false);
+	echo create_header($_SESSION["settings"]["html_title"], $style,"","","","logolisa.svg",false);
 ?>
 
 <?php

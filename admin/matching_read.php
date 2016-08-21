@@ -3,7 +3,7 @@
 	require_once('../preload.php'); 	//Create Session an load Config
 	check_login_logout("admin"); //area = false => auto = folder name
 	
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");		
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");		
 
 	echo "<h3>LiSA - Matching!</h3>";
 	echo "<br><a href='matching_index.php'> Zur&uuml;ck </a><br>";	

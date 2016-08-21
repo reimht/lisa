@@ -3,7 +3,7 @@
 	require_once('../preload.php'); 	//Create Session an load Config
 	check_login_logout("admin");	
 
-	echo create_header("BBS2Leer", "","","","","logolisa.svg");
+	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg");
 	
 ?>
 			<h3>LiSA - Admin!</h3>
