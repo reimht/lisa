@@ -22,9 +22,6 @@
 							<form action='fileManager.php' method='POST' >
 								<input type='submit' value='Dateimanager / Sch&uuml;lernamen &auml;ndern'>
 							</form>
-                                                        <form action='getZipImageForUntis.php' method='POST' >
-								<input type='submit' value='Bilder-Zip-Download mit Ldap Kuerzel'>
-							</form>
 						</td>
 					</tr>
 					<tr>

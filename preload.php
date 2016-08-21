@@ -25,8 +25,8 @@
 		//require_once($_SERVER['DOCUMENT_ROOT']."/config/settings.php"); 
 		$_SESSION["settings"]=parse_ini_file($_SESSION["base_folder"]."config/settings.ini", FALSE);
 		$_SESSION["lisa_path"]=realpath($_SESSION["base_folder"]);//.$_SESSION["settings"]["domainSubFolder"]);
+		$_SESSION["lisa_web_base_path"]=substr(__DIR__,strlen($_SERVER["DOCUMENT_ROOT"]));
 	}
-	
 	
 	//Check other config files
 	check_config_file_templates($_SESSION["settings"]["classes.csv"]); //"config/classes.csv"); 

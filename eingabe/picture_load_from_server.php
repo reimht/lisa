@@ -84,14 +84,15 @@
 							foreach($pictures AS $pic){
 								$filename=$path.$pic;
 								$thumbfilename=$path."thumb".DIRECTORY_SEPARATOR.$pic;
-								
+						
 								$filenameWWW=str_replace($_SESSION["lisa_path"],"",$filename);
-								$thumbfilenameWWW=str_replace($_SESSION["lisa_path"],"",$thumbfilename);
+								$thumbfilenameWWW=$_SESSION["lisa_web_base_path"].str_replace($_SESSION["lisa_path"],"",$thumbfilename);
 								
 								if(  !file_exists ( $thumbfilename )  ) create_thumb($filename,$thumbfilename); //Event.  Voransicht erstellen
 								echo "	<td><a href='$nextpage?picfile=$filenameWWW'><img src='$thumbfilenameWWW'> </a></td>";
 								if( ($i%3)==0 ) echo "\n</tr>\n<tr>";
-								$i++;
+								$i++;								
+	
 							}
 						}
 					
