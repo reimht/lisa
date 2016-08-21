@@ -9,3 +9,4 @@ admin/layout_ausweis.html
 admin/layout_klasse.html
 lisa_chown_edit.sh
 lisa_chown.sh
+eingabe/webcam_log.csv

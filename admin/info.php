@@ -38,6 +38,17 @@
 		echo "Error: Funktion 'imagecreatefromjpeg' ist nicht verf&uuml;gbar<br><br>\n";
 	}	
 
+	if (extension_loaded('mbstring')) {
+		echo "OK: Extension 'mbstring' ist geladen<br>\n";
+	}
+	else{
+		echo "Error: Extension 'mbstring' ist nicht verf&uuml;gbar<br>\n";
+	}
+	if( !function_exists("mb_strpos")){
+		echo "Error: Funktion 'mb_strpos' ist nicht verf&uuml;gbar<br><br>\n";
+	}		
+	
+
 	
 	function create_size_row($path_id){
 		$path=$_SESSION["lisa_path"]."/".$_SESSION["settings"][$path_id];

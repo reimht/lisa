@@ -323,6 +323,8 @@ function strwidth($string){
 	
 	$jahr=date("Y");
 
+
+
 	$ablaufdatum_nicht_automatik="";
 	$ablaufdatum="31.07.".($jahr+1);
 	if( isset($_POST["ablaufdatum_nicht_automatik"]) ){
@@ -330,7 +332,11 @@ function strwidth($string){
 		$ablaufdatum_msg="Das Ablaufdatum wurde nicht automatisch bestimmt!";
 	}
 	else{
-		$classes_ablauf=read_classes_from_csv("../".$_SESSION["settings"]["classes.csv"], true);
+	
+		//$classes_ablauf=read_classes_from_csv("../".$_SESSION["settings"]["classes.csv"], true);
+		$classes_ablauf=read_classes_from_csv($_SESSION["lisa_path"].DIRECTORY_SEPARATOR.$_SESSION["settings"]["classes.csv"], true);
+		
+		
 		$ablauf=ausweisAblauf($class,$classes_ablauf);		
 		$validity_years=class_validity_years($class, $classes_ablauf);
 		if($validity_years>0){
@@ -369,73 +375,6 @@ function strwidth($string){
 	}
 
 
-		function print_pass($data, $layoutbody){
-			global $ablaufdatum, $schuljahr;
-			$given_name = convert_string( $data["given_name"] );
-			$last_name = convert_string( $data["last_name"] );
-			$name=   $given_name." ".$last_name;
-			$birthday=$data["birthday"];
-			$class=$data["class"];
-			$img="../".$data["pic_small"];
-		
-			$last_name_url=urlencode(    $data["last_name"]    );
-			$last_name_url=str_replace( "+"," ",$last_name_url);
-
-			$given_name_url=urlencode(    $data["given_name"]);
-			$given_name_url=str_replace( "+"," ",$given_name_url);
-
-
-			$img = str_replace($data["last_name"]   ,$last_name_url , $img);
-			$img = str_replace($data["given_name"], $given_name_url , $img);
-			//$img = str_replace($data["last_name"], urlencode($data["last_name"]), $img);
-
-			if(strlen($layoutbody)>100){
-				$layoutbody=str_replace("LISA_LINK_AUSWEIS", "show_one_student.php?img=".urlencode($img)."&gn=".urlencode($given_name)."&ln=".urlencode($last_name)."&b=".urlencode($birthday)."&c=".urlencode($class)."&a=".urlencode($ablaufdatum), $layoutbody);
-				$layoutbody=str_replace("LISA_BILD", $img, $layoutbody);
-				$layoutbody=str_replace("LISA_VORNAME", $given_name, $layoutbody);
-				$layoutbody=str_replace("LISA_NACHNAME", $last_name, $layoutbody);
-				$layoutbody=str_replace("LISA_GEBURTSDATUM", $birthday, $layoutbody);
-				$layoutbody=str_replace("LISA_KLASSE", $class, $layoutbody);
-				$layoutbody=str_replace("LISA_SCHULJAHR", $schuljahr, $layoutbody);
-				$layoutbody=str_replace("LISA_ABLAUFDATUM", $ablaufdatum, $layoutbody);
-					
-				return $layoutbody;
-			}
-
-			$s="";
-			$s.="<table border='0' style='border-collapse:collapse;'>
-<!--			
-			<tr>
-				<th colspan='3'>Schulname</th>
-			</tr>
--->
-			<tr>
-				<td rowspan='9' class='imgpass_td'><a href='show_one_student.php?img=".urlencode($img)."&gn=".urlencode($given_name)."&ln=".urlencode($last_name)."&b=".urlencode($birthday)."&c=".urlencode($class)."&a=".urlencode($ablaufdatum)."'><img src='$img' class='imgpass'></a></td>
-				<td colspan='2' class='pass_description_long'>Vorname, Name:</td>
-			</tr>
-			<tr>
-				<td colspan='2' class='pass_value_long'>$name</td>
-			</tr>
-			<tr>
-				<td class='pass_description_short'>Geburtsdatum:</td>
-				<td class='pass_value_short'>$birthday</td>
-			</tr>
-			<tr>
-				<td class='pass_description_short'>Klasse:</td>
-				<td class='pass_value_short'>$class</td>
-			</tr>
-<!--
-			<tr>
-				<td class='pass_description_short'>Schuljahr</td>
-				<td class='pass_value_short'>$schuljahr</td>
-			</tr>
--->
-			<tr>
-				<td>&nbsp;</td>
-			</tr>
-			</table>";
-			return $s;
-		}
 
 
 
@@ -444,10 +383,9 @@ function strwidth($string){
 		$student["last_name"] =$last_name;
 		$student["birthday"] = $birthday;
 		$student["class"] = $class;
-		$student["pic_small"] = $imgfile["filepath"].$imgfile["filename"];
-		$student["pic_small"] = $imgfile["filepath"].$imgfile["filename"];
+		$student["pic"] = $imgfile["filepath"].$imgfile["filename"];
+		//$student["pic"] = $imgfile["filepath"].$imgfile["filename"];
 
-
-		echo print_pass($student, $layoutbody);
+		echo print_pass($student, $layoutbody,$_SESSION["lisa_web_base_path"]);
 
 ?>

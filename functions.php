@@ -86,6 +86,74 @@ root@machine:/tmp# echo -n Ä | hexdump
 		//return $s;
 	}
 
+		function print_pass($data, $layoutbody, $web_base_path="../"){
+			global $ablaufdatum, $schuljahr;
+			$given_name = convert_string( $data["given_name"] );
+			$last_name = convert_string( $data["last_name"] );
+			$name=   $given_name." ".$last_name;
+			$birthday=$data["birthday"];
+			$class=$data["class"];
+			$img=$data["pic"];
+			
+			$last_name_url=urlencode(    $data["last_name"]    );
+			$last_name_url=str_replace( "+"," ",$last_name_url);
+
+			$given_name_url=urlencode(    $data["given_name"]);
+			$given_name_url=str_replace( "+"," ",$given_name_url);
+
+
+			$img = str_replace($data["last_name"]   ,$last_name_url , $img);
+			$img = str_replace($data["given_name"], $given_name_url , $img);
+			//$img = str_replace($data["last_name"], urlencode($data["last_name"]), $img);
+
+			//Prüfe ob Body der Basis html-Datei wahrscheinlich korrekt ist
+			if(strlen($layoutbody)>100){
+				$layoutbody=str_replace("LISA_LINK_AUSWEIS", "show_one_student.php?img=".urlencode($img)."&gn=".urlencode($given_name)."&ln=".urlencode($last_name)."&b=".urlencode($birthday)."&c=".urlencode($class)."&a=".urlencode($ablaufdatum), $layoutbody);
+				$layoutbody=str_replace("LISA_BILD", $web_base_path."/".$img, $layoutbody);
+				$layoutbody=str_replace("LISA_VORNAME", $given_name, $layoutbody);
+				$layoutbody=str_replace("LISA_NACHNAME", $last_name, $layoutbody);
+				$layoutbody=str_replace("LISA_GEBURTSDATUM", $birthday, $layoutbody);
+				$layoutbody=str_replace("LISA_KLASSE", $class, $layoutbody);
+				$layoutbody=str_replace("LISA_SCHULJAHR", $schuljahr, $layoutbody);
+				$layoutbody=str_replace("LISA_ABLAUFDATUM", $ablaufdatum, $layoutbody);
+					
+				return $layoutbody;
+			}
+
+			$s="";
+			$s.="<table border='0' style='border-collapse:collapse;'>
+<!--			
+			<tr>
+				<th colspan='3'>Schulname</th>
+			</tr>
+-->
+			<tr>
+				<td rowspan='9' class='imgpass_td'><a href='show_one_student.php?img=".urlencode($img)."&gn=".urlencode($given_name)."&ln=".urlencode($last_name)."&b=".urlencode($birthday)."&c=".urlencode($class)."&a=".urlencode($ablaufdatum)."'><img src='$img' class='imgpass'></a></td>
+				<td colspan='2' class='pass_description_long'>Vorname, Name:</td>
+			</tr>
+			<tr>
+				<td colspan='2' class='pass_value_long'>$name</td>
+			</tr>
+			<tr>
+				<td class='pass_description_short'>Geburtsdatum:</td>
+				<td class='pass_value_short'>$birthday</td>
+			</tr>
+			<tr>
+				<td class='pass_description_short'>Klasse:</td>
+				<td class='pass_value_short'>$class</td>
+			</tr>
+<!--
+			<tr>
+				<td class='pass_description_short'>Schuljahr</td>
+				<td class='pass_value_short'>$schuljahr</td>
+			</tr>
+-->
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			</table>";
+			return $s;
+		}
 
 
 	//Ermittelt den Zeichensatz eines Strings
