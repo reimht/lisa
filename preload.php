@@ -109,10 +109,9 @@
 		}
 		else if(!file_exists(__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings])){
 			echo "Error: Directory '".__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings]."' for '$name_settings' not exists.<br>\n";
-			echo "Go to the admin web-interface and choose 'create folders'!<br>\n";
+			echo "<a href='/lisa_git/lisa/admin/'> Go to the admin web-interface and choose 'create folders'!</a><br>\n";
 		}
 	}
-
 
 	function check_config_file_templates($file){
 		
