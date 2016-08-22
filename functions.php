@@ -291,7 +291,15 @@ root@machine:/tmp# echo -n Ä | hexdump
 
 	}
 
-	function create_footer($body="", $web_base_path=""){
+	function create_footer($body="", $web_base_path=null){
+		if( $web_base_path==null){
+			if(isset($_SESSION["lisa_web_base_path"])){
+				$web_base_path=$_SESSION["lisa_web_base_path"];
+			}
+			else{
+				$web_base_path="";
+			}
+		}
 		return "$body
 					<div id='footer' align='left'>
 						

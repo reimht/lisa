@@ -15,7 +15,7 @@
 
 	//Load Funktions
 	require_once($_SESSION["base_folder"]."functions.php"); 
-	
+
 	//Check main config file
 	check_config_file_templates("config/settings.ini");
 	//Load main config
