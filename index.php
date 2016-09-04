@@ -19,7 +19,11 @@
 			<a href='edit/'>Sch&uuml;lerdaten &auml;ndern</a> &nbsp;&nbsp;-&nbsp;&nbsp;
 			<a href='admin/'>Einstellungen &auml;ndern</a> &nbsp;&nbsp;&nbsp;&nbsp;<br><br>
 			";
-	echo create_header($_SESSION["settings"]["html_title"], "","",$meta_refresh,$body,"logolisa.svg",false);
-	echo create_footer("",$_SESSION["lisa_web_base_path"]); 
+			
+	$html_title = isset($_SESSION["settings"]["html_title"]) ? $_SESSION["settings"]["html_title"] : 'LiSA';
+	$lisa_web_base_path = isset($_SESSION["lisa_web_base_path"]) ? $_SESSION["lisa_web_base_path"] : '';
+	
+	echo create_header($html_title, "","",$meta_refresh,$body,"logolisa.svg",false);
+	echo create_footer("",$lisa_web_base_path); 
 ?> 
 
