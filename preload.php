@@ -37,7 +37,7 @@
 		check_path("temp_image_file_path");
 		check_path("target_image_file_path");
 		check_path("images_matching_lisa");
-	
+
 	}
 	
 //preecho($_SESSION["settings"]);	
@@ -101,16 +101,37 @@
 		return false;
 	}
 	
+	function check_libs($exit_on_error=false){
+		//Check libs
+		$error=false;
+		if (!extension_loaded('zip')) {
+			echo "Error: Extension 'zip' ist nicht verf&uuml;gbar - Versuchen Sie 'sudo apt-get install php-zip; sudo service apache2 restart'<br>\n";
+			$error=true;
+		}
+		if (!extension_loaded('gd')) {
+			echo "Error: Extension 'gd' ist nicht verf&uuml;gbar - Versuchen Sie 'sudo apt-get install php-gd; sudo service apache2 restart'<br>\n";
+			$error=true;
+		}
+		if (!extension_loaded('mbstring')) {
+			echo "Error: Extension 'mbstring' ist nicht verf&uuml;gbar - Versuchen Sie 'sudo apt-get install php-mbstring; sudo service apache2 restart'<br>\n";
+			$error=true;
+		}
+		if( $error===true && $exit_on_error===true) exit(0); //Stopp runing until the extentions are installed
+		return $error;
+	}
+	
 	function check_path($name_settings){
-
 		$settings=$_SESSION["settings"];
+		$error=false;
 		if(!isset($settings[$name_settings])){
 			echo "Error: Setting with name '$name_settings' not found!<br>\n";
 		}
 		else if(!file_exists(__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings])){
 			echo "Error: Directory '".__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings]."' for '$name_settings' not exists.<br>\n";
 			echo "<a href='".$_SESSION["lisa_web_base_path"]."/admin'> Go to the admin web-interface and choose 'create folders'!</a><br>\n";
+			$error=true;
 		}
+		return $error;
 	}
 
 	//Überprüft ob die Konfigurationsdateien vorhanden sind.

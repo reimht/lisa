@@ -10,9 +10,11 @@
 	session_destroy();
 	
 	require_once('../preload.php'); 	//Create Session an load Config
-	//check_login_logout("eingabe");	
+	
 	echo create_header($_SESSION["settings"]["html_title"], "","","","","logolisa.svg",false);
 
+	//Check libraries and stopp in case of errors
+	$error=check_libs(true); //check the necessary libraries true=stopp_on_error
 	
 	if(isset($settings["demo_mode"])){
 		if($settings["demo_mode"]==true){
