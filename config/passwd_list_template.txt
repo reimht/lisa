@@ -1,10 +1,11 @@
 #Bereich; Freischaltung (Hashalgorithmus:plain|md5|sha512|...); Passwort
 #oder Bereich; Freischaltung (ipv4); IPv4Subnetz
+#oder Bereich; nopassword
 admin;plain;admin
 print;plain;print
 print;ipv4;10.64.0.0/16
 upload;plain;upload
-eingabe;plain;eingabe
+eingabe;nopassword
 edit;plain;edit
 #Folgende Zeile E201 darf ohne Passwort Userdaten eingeben
 eingabe;ipv4;10.5.101.0/24

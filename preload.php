@@ -158,27 +158,36 @@
 			if( sizeof($row) >= 2){
 				$entry_area=trim($row[0]);
 				$entry_unblocking_mode=trim($row[1]);
-				$entry_pwd=trim($row[2]);
+				if($entry_unblocking_mode!="nopassword"){
+					$entry_pwd=trim($row[2]);
+				}
+				else{
+					$entry_pwd=false;
+				}
 				//Grober Check ob überhaupt Daten in den Spalten stehen
-				if( strlen($entry_area)>2 AND  strlen($entry_unblocking_mode)>2 AND  strlen($entry_pwd)>2) {
+				if( strlen($entry_area)>2 AND  strlen($entry_unblocking_mode)>2 ) {
 					//Prüfen ob es (k)ein Kommentar ist
 					if( $entry_area{0} != "#" ){
 						//Prüfe ob passende Zeile gefunden wurde
-						if ($entry_area == $area ){
-							if( strtolower($entry_unblocking_mode) == "ipv4" ){
+						if ($entry_area == $area ){ //Gilt das Passwort für den gewählten Bereich (upload, admin, ...)
+							if( strtolower($entry_unblocking_mode) == "nopassword" ){ //Modus: kein Passwort
+								//Dieser Bereich ist als Bereich ohne Passwort konfiguriert (vgl. Datei "passwd_list.txt")
+								return true;
+							}
+							if( strtolower($entry_unblocking_mode) == "ipv4" ){ //Modus: Freigabe über IP-Adresse/Bereich
 								$iprange=trim($row[2]);
 								if(in_ip_range($iprange)){
 									//Übereinstimmung gefunden
 									return true;
 								}
 							}
-							else if($password!==false){
+							else if($password!==false){ //Modus: Passwort Abfrage 
 								if( strtolower($entry_unblocking_mode)=="plain" ){
 									if($entry_pwd == $password){
 										return true;
 									}
 								}
-								else{
+								else if(  strlen($entry_pwd)>2){
 									//Prüfen ob der Hashwert gebildet werden kann
 									if( !$password_hash=hash ( $entry_unblocking_mode , $password) ){
 										echo "Hashalgorithmus '$entry_unblocking_mode' wird nicht unterstützt";
