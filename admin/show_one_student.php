@@ -337,7 +337,7 @@ function strwidth($string){
 		$classes_ablauf=read_classes_from_csv($_SESSION["lisa_path"].DIRECTORY_SEPARATOR.$_SESSION["settings"]["classes.csv"], true);
 		
 		
-		$ablauf=ausweisAblauf($class,$classes_ablauf);		
+		//$ablauf=ausweisAblauf($class,$classes_ablauf);		
 		$validity_years=class_validity_years($class, $classes_ablauf);
 		if($validity_years>0){
 			$ablaufdatum=ausweisAblauf($validity_years);

@@ -119,10 +119,10 @@
 	
 	//Edit Link je nach loginarea anpassen
 	if($_SESSION["LOGINAREA"]=="admin"){
-		$classForEditLink= "/admin/fileManager.php?path=/$classForEditLink/";
+		$classForEditLink= $_SESSION["lisa_web_base_path"]."/admin/fileManager.php?path=/$classForEditLink/";
 	}
 	else{
-		$classForEditLink= "/edit/fileManager.php?path=/$classForEditLink/";
+		$classForEditLink= $_SESSION["lisa_web_base_path"]."/edit/fileManager.php?path=/$classForEditLink/";
 	}
 	
 	function compare_student($a, $b) {
@@ -603,6 +603,11 @@
 						<td colspan='3'>
 								Ablaufdatum: <input id="ablaufdatum_textfield" type="text" name="ablaufdatum" value="<?php echo $ablaufdatum ?>" size='10' disabled>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Schuljahr: <input id="schuljahr_textfield" type="text" name="schuljahr" value="<?php echo $schuljahr?>" size='10' disabled>
+						</td>
+					</tr>
+					<tr>
+						<td colspan='3'>
+								Um die Daten zu &uuml;bernehmen auf <b>'anzeigen'</b> klicken
 						</td>
 					</tr>
 					<tr>
