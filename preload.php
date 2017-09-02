@@ -10,9 +10,8 @@
 		}
 		$_SESSION["base_folder"]=$base_folder;
 	}
+
 	
-
-
 	//Load Funktions
 	require_once($_SESSION["base_folder"]."functions.php"); 
 
@@ -22,7 +21,7 @@
 	if( !isset($_SESSION["settings"]) ){
 		//require_once($_SERVER['DOCUMENT_ROOT']."/config/settings.php"); 
 		$_SESSION["settings"]=parse_ini_file($_SESSION["base_folder"]."config/settings.ini", FALSE);
-		$_SESSION["lisa_path"]=realpath($_SESSION["base_folder"]);//.$_SESSION["settings"]["domainSubFolder"]);
+		$_SESSION["lisa_path"]=realpath($_SESSION["base_folder"]);//.$_SESSION["settings"]["domainSubFolder"]);  //Ermittelt das LiSA-Hauptverzeichnis aus Sicht der URL - Beispiel: www.mydomain.de/LiSA  -> /LiSA/
 		$_SESSION["lisa_web_base_path"]=substr(__DIR__,strlen($_SERVER["DOCUMENT_ROOT"]));
 	
 		//Check other config files
@@ -103,16 +102,19 @@
 	}
 	
 	function check_path($name_settings){
+
 		$settings=$_SESSION["settings"];
 		if(!isset($settings[$name_settings])){
 			echo "Error: Setting with name '$name_settings' not found!<br>\n";
 		}
 		else if(!file_exists(__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings])){
 			echo "Error: Directory '".__DIR__.DIRECTORY_SEPARATOR.$settings[$name_settings]."' for '$name_settings' not exists.<br>\n";
-			echo "<a href='/lisa_git/lisa/admin/'> Go to the admin web-interface and choose 'create folders'!</a><br>\n";
+			echo "<a href='".$_SESSION["lisa_web_base_path"]."/admin'> Go to the admin web-interface and choose 'create folders'!</a><br>\n";
 		}
 	}
 
+	//Überprüft ob die Konfigurationsdateien vorhanden sind.
+	//Wenn nicht, werden ggf. vorhandene Vorlagen/Templates kopiert
 	function check_config_file_templates($file){
 		
 		if($file{0}!="/"){
